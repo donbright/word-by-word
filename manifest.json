@@ -1,0 +1,19 @@
+{
+  "name": "Word By Word",
+  "version": "0.2.0",
+  "description": "Translate words by clicking with the mouse pointer.",
+  "permissions": [
+    "http://translate.google.com"
+  ],
+  "icons": {
+    "48" : "wordbyword-48.png",
+    "128" : "wordbyword-128.png"
+  },
+  "background_page" : "background.html",
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js" : ["contentscript.js"]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+ * copyright (c) 2011 don bright
+ * Copyright (c) 2010 The Chromium Authors. All rights reserved.  Use of this
+ * source code is governed by a BSD-style license that can be found in the
+ * LICENSE file.
+-->
+<html>
+  <head>
+  </head>
+  <body>
+    	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+      <script type="text/javascript">
+    		google.load("language", "1");
+    	</script>
+
+      <script>
+       /* lookup translation, call function in contentscript.js with result
+        * @param request {'action' : 'lookup_translation', 'text': 'green frog', 'from_lang':'en', 'to_lang':'ru' };
+        * @param callback the onRequest function sets this appropriately to point to contentscript.js
+        */
+      function lookup_translation(request, callback) {
+        console.log('background.html , lookup_trans begin');
+        console.log(request.text, request.from_lang, request.to_lang);
+        //google.language.translate("heart", "en", "fr", callback);
+        google.language.translate(request.text, request.from_lang, request.to_lang, callback);
+        console.log('background.html , lookup_trans end');
+      };
+
+      /* handle messages from contentscript.js 
+       * @param request {'action' : 'lookup_translation', 'text': 'green frog', 'from_lang':'en', 'to_lang':'ru' };
+       * @param sender Object Origin of the request.
+       * @param callback Function in contentscript.js that will be called with the translation result
+       */
+      function onRequest(request, sender, callback) {
+        console.log('background.html , on request',request);
+        if (request.action == 'lookup_translation') {
+          lookup_translation(request,callback);
+        }
+      };
+
+      // listen for messages from contentscript.js
+      chrome.extension.onRequest.addListener(onRequest);
+    </script>
+  </body>
+</html>
